@@ -6,7 +6,7 @@ interface MdxContentProps {
 
 export function MdxContent({ source }: MdxContentProps) {
   return (
-    <div className="prose prose-stone max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-a:text-amber-700 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-amber-300 prose-code:before:content-none prose-code:after:content-none prose-code:rounded prose-code:bg-stone-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-stone-800 dark:prose-code:bg-stone-800 dark:prose-code:text-stone-100">
+    <div className="prose prose-blog max-w-none prose-headings:scroll-mt-24 prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover hover:prose-a:underline prose-code:before:content-none prose-code:after:content-none prose-code:rounded prose-code:bg-zinc-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-foreground prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-border">
       <MDXRemote source={source} />
     </div>
   );

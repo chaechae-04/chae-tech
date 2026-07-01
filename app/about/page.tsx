@@ -1,14 +1,11 @@
 export const metadata = {
-  title: "About | chae-tech",
+  title: "About",
   description: "chae-tech 블로그 소개",
 };
 
 export default function AboutPage() {
   return (
-    <section className="prose prose-stone max-w-none dark:prose-invert">
-      <p className="text-sm font-medium uppercase tracking-widest text-amber-600 not-prose dark:text-amber-400">
-        About
-      </p>
+    <section className="prose prose-blog max-w-none">
       <h1>chae-tech</h1>
       <p>
         우리집 고양이 <strong>채채</strong>와 <strong>tech</strong>를 합쳐 만든

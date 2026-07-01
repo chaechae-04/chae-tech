@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   if (!meta) return { title: "카테고리를 찾을 수 없습니다" };
 
   return {
-    title: `${meta.label} | chae-tech`,
+    title: meta.label,
     description: meta.description,
   };
 }
@@ -33,21 +33,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <section>
-      <p className="text-sm font-medium uppercase tracking-widest text-amber-600 dark:text-amber-400">
-        Category
-      </p>
-      <h1 className="mt-2 text-3xl font-bold text-stone-900 dark:text-stone-50">
-        {meta.label}
-      </h1>
-      <p className="mt-3 text-stone-600 dark:text-stone-400">{meta.description}</p>
+      <h1 className="text-3xl font-semibold text-foreground">{meta.label}</h1>
+      <p className="mt-3 text-muted">{meta.description}</p>
 
-      <div className="mt-10 flex flex-col gap-4">
+      <div className="mt-10">
         {posts.length > 0 ? (
           posts.map((post) => <PostCard key={post.slug} post={post} />)
         ) : (
-          <p className="rounded-2xl border border-dashed border-stone-300 px-6 py-10 text-center text-stone-500 dark:border-stone-700 dark:text-stone-400">
-            아직 글이 없습니다. <code className="text-sm">content/{category}/</code>{" "}
-            폴더에 MDX 파일을 추가해 보세요.
+          <p className="border border-dashed border-border px-6 py-10 text-center text-sm text-muted">
+            아직 글이 없습니다.{" "}
+            <code className="text-foreground">content/{category}/</code> 폴더에
+            MDX 파일을 추가해 보세요.
           </p>
         )}
       </div>

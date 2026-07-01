@@ -8,46 +8,35 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="mb-12">
-        <p className="text-sm font-medium uppercase tracking-widest text-amber-600 dark:text-amber-400">
-          Welcome
-        </p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-50 sm:text-4xl">
+      <section className="mb-14">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           채채의 기술 투자 일지
         </h1>
-        <p className="mt-4 max-w-2xl text-lg leading-8 text-stone-600 dark:text-stone-400">
+        <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
           기초부터 새 기술까지, 배운 것을 기록하는 테크 블로그입니다. 알고리즘
           정리와 웹 개발 포트폴리오를 겨울방학 인턴 준비까지 이어갑니다.
         </p>
       </section>
 
-      <section className="mb-12">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-          Categories
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-2">
+      <section className="mb-14">
+        <h2 className="mb-4 text-sm text-muted">카테고리</h2>
+        <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2">
           {CATEGORIES.map((category) => (
             <Link
               key={category.id}
               href={`/category/${category.id}`}
-              className="rounded-2xl border border-stone-200 bg-white px-5 py-4 transition-all hover:border-amber-200 hover:shadow-sm dark:border-stone-800 dark:bg-stone-900 dark:hover:border-amber-900"
+              className="bg-background px-5 py-4 transition-colors hover:bg-zinc-900/50"
             >
-              <p className="font-semibold text-stone-900 dark:text-stone-50">
-                {category.label}
-              </p>
-              <p className="mt-1 text-sm text-stone-600 dark:text-stone-400">
-                {category.description}
-              </p>
+              <p className="font-medium text-foreground">{category.label}</p>
+              <p className="mt-1 text-sm text-muted">{category.description}</p>
             </Link>
           ))}
         </div>
       </section>
 
       <section>
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-          Recent Posts
-        </h2>
-        <div className="flex flex-col gap-4">
+        <h2 className="mb-2 text-sm text-muted">최근 글</h2>
+        <div>
           {posts.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}

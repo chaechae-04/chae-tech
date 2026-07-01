@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PostPageProps) {
   if (!post) return { title: "글을 찾을 수 없습니다" };
 
   return {
-    title: `${post.title} | chae-tech`,
+    title: post.title,
     description: post.description,
   };
 }
@@ -36,28 +36,26 @@ export default async function PostPage({ params }: PostPageProps) {
     <article>
       <Link
         href={`/category/${post.category}`}
-        className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 transition-colors hover:bg-amber-100 dark:bg-amber-950 dark:text-amber-300 dark:hover:bg-amber-900"
+        className="text-sm text-accent transition-colors hover:text-accent-hover"
       >
         {getCategoryLabel(post.category)}
       </Link>
 
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-50">
+      <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
         {post.title}
       </h1>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-stone-500 dark:text-stone-400">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted">
         <time dateTime={post.date}>{post.date}</time>
         <span>·</span>
         <span>{post.readingTime}</span>
       </div>
 
       {post.description && (
-        <p className="mt-4 text-lg leading-8 text-stone-600 dark:text-stone-400">
-          {post.description}
-        </p>
+        <p className="mt-5 text-base leading-7 text-muted">{post.description}</p>
       )}
 
-      <div className="mt-10 border-t border-stone-200 pt-10 dark:border-stone-800">
+      <div className="mt-10 border-t border-border pt-10">
         <MdxContent source={post.content} />
       </div>
     </article>
