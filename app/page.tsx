@@ -10,11 +10,11 @@ export default function HomePage() {
     <>
       <section className="mb-14">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          채채의 기술 투자 일지
+          CHAE-TECH
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-          기초부터 새 기술까지, 배운 것을 기록하는 테크 블로그입니다. 알고리즘
-          정리와 웹 개발 포트폴리오를 겨울방학 인턴 준비까지 이어갑니다.
+          배운 것을 기록하는 테크 블로그입니다. <br />
+          알고리즘 정리와 웹 개발 포트폴리오를 겨울방학 인턴 준비까지 이어갑니다.
         </p>
       </section>
 
