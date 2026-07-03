@@ -3,6 +3,7 @@ import { CATEGORIES } from "@/lib/categories";
 
 const navItems = [
   { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects" },
   { href: "/about", label: "About" },
 ];
 
