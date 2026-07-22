@@ -1,0 +1,123 @@
+---
+title: "[JAVA] 완주하지 못한 선수"
+description: "프로그래머스 lv.1 완주하지 못한 선수 문제 풀이 과정"
+date: "2025-07-22"
+category: algo
+tags: ["프로그래머스", "알고리즘", "JAVA"]
+---
+
+프로그래머스 lv.1 **완주하지 못한 선수** 문제 풀이입니다.
+
+### 📌 문제 설명
+수많은 마라톤 선수들이 마라톤에 참여하였습니다. 단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.  
+마라톤에 참여한 선수들의 이름이 담긴 배열 `participant`와 완주한 선수들의 이름이 담긴 배열 `completion`이 주어질 때, 완주하지 못한 선수의 이름을 return 하도록 solution 함수를 작성해주세요.
+
+### ⚠️ 제한사항
+- 마라톤 경기에 참여한 선수의 수는 1명 이상 100,000명 이하입니다.
+- `completion`의 길이는 `participant`의 길이보다 1 작습니다.
+- 참가자의 이름은 1개 이상 20개 이하의 알파벳 소문자로 이루어져 있습니다.
+- 참가자 중에는 **동명이인**이 있을 수 있습니다.
+
+### 📥 입출력 예
+
+| **participant** | **completion** | **return** |
+| :--- | :--- | :--- |
+| ["leo", "kiki", "eden"] | ["eden", "kiki"] | "leo" |
+| ["marina", "josipa", "nikola", "vinko", "filipa"] | ["josipa", "filipa", "marina", "nikola"] | "vinko" |
+| ["mislav", "stanko", "mislav", "ana"] | ["stanko", "ana", "mislav"] | "mislav" |
+
+---
+
+### 💻 내가 작성한 첫 번째 코드
+
+처음에는 참가자 명단용 Map과 완주자 명단용 Map을 각각 생성한 뒤, 완주자 Map을 순회하며 참가자 Map의 수량을 차감(차집합)하는 방식으로 접근했습니다.
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+        Map<String, Integer> participantCount = new HashMap<>();
+        Map<String, Integer> completionCount = new HashMap<>();
+
+        // 1. 참가자 카운팅
+        for (String p : participant) {
+            participantCount.put(p, participantCount.getOrDefault(p, 0) + 1);
+        }
+
+        // 2. 완주자 카운팅
+        for (String c : completion) {
+            completionCount.put(c, completionCount.getOrDefault(c, 0) + 1);
+        }
+
+        // 3. 두 Map을 비교하여 차집합 구하기
+        for (String key : completionCount.keySet()) {
+            if (participantCount.containsKey(key)) {
+                int diff = participantCount.get(key) - completionCount.get(key);
+
+                if (diff > 0) {
+                    participantCount.put(key, diff);
+                } else {
+                    participantCount.remove(key);
+                }
+            }
+        }
+
+        // 4. 남은 단 하나의 Key 반환
+        return participantCount.keySet().iterator().next();
+    }
+}
+```
+
+### 🔍 복기 및 코드 리팩토링 (개선점 찾기)
+
+위 코드로도 통과했지만, 코드를 다시 보며 **공간/시간 측면에서 개선할 점**을 고민해 보았습니다.
+
+### 💡 개선 포인트
+> "Map을 꼭 2개 써야 할까?"
+- 문제점
+    1. completionCount라는 두 번째 Map을 생성하면서 불필요한 추가 메모리(공간 복잡도)를 사용함.
+    2. Map 2개를 각각 채운 뒤 다시 3번째 반복문에서 remove/put 연산을 수행하여 로직이 다소 복잡함.
+- 최종 개선된 코드 (Map 1개 활용)   
+    completion 배열을 다룰 때 굳이 새 Map을 만들지 않고, 기존 participant Map에서 바로 값을 -1씩 차감하면 훨씬 가볍고 직관적인 코드가 됩니다.
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+        Map<String, Integer> map = new HashMap<>();
+
+        // 1. 참가자 카운팅 (+1)
+        for (String p : participant) {
+            map.put(p, map.getOrDefault(p, 0) + 1);
+        }
+
+        // 2. 완주자는 기존 Map에서 차감 (-1)
+        for (String c : completion) {
+            map.put(c, map.get(c) - 1);
+        }
+
+        // 3. Value가 0이 아닌 (남아있는) 참가자 찾기
+        for (String key : map.keySet()) {
+            if (map.get(key) != 0) {
+                return key;
+            }
+        }
+
+        return "";
+    }
+}
+```
+
+---
+
+### 💡 이번 문제를 통해 배운 점
+
+1. **하나의 Map으로 빈도수 다루기 (`+1` / `-1` 카운팅)**
+   두 개의 Map을 만들어 차집합을 구하는 대신, 하나의 Map에 참가자를 `+1`로 등록하고 완주자를 `-1`로 차감하는 **상태 상쇄 방식**을 적용해 보았습니다. 이를 통해 불필요한 메모리 사용을 줄이고 로직도 훨씬 직관적으로 만들 수 있었습니다.
+
+2. **리팩토링의 가치**
+   제출을 통과했더라도 메모리와 시간 복잡도 관점에서 개선점을 고민해보는 과정이 중요하다는 것을 느꼈습니다. '자료구조를 하나 줄일 수 없을까?'라는 작은 의문이 코드를 훨씬 더 깔끔하게 다듬어주는 계기가 되었습니다.
