@@ -1,8 +1,8 @@
 export const CATEGORIES = [
   {
-    id: "fundamentals",
-    label: "Fundamentals",
-    description: "기초 · 동작 원리",
+    id: "lectureReview",
+    label: "Lecture Review",
+    description: "강의 리뷰",
   },
   {
     id: "web",
