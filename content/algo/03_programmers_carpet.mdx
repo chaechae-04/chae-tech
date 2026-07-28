@@ -1,0 +1,103 @@
+---
+title: "[JAVA] 카펫"
+description: "프로그래머스 Lv.2 K번째 수 문제 풀이 과정"
+date: "2025-07-28"
+category: algo
+tags: ["프로그래머스", "Lv.2", "알고리즘", "JAVA"]
+---
+
+프로그래머스 Lv.2 **K번째 수** 문제 풀이입니다.
+
+### 📌 문제 설명
+Leo는 카펫을 사러 갔다가 아래 그림과 같이 중앙에는 노란색으로 칠해져 있고 테두리 1줄은 갈색으로 칠해져 있는 격자 모양 카펫을 봤습니다.   
+Leo는 집으로 돌아와서 아까 본 카펫의 노란색과 갈색으로 색칠된 격자의 개수는 기억했지만, 전체 카펫의 크기는 기억하지 못했습니다.   
+Leo가 본 카펫에서 갈색 격자의 수 brown, 노란색 격자의 수 yellow가 매개변수로 주어질 때 카펫의 가로, 세로 크기를 순서대로 배열에 담아 return 하도록 solution 함수를 작성해주세요.   
+
+### ⚠️ 제한사항
+- 갈색 격자의 수 brown은 8 이상 5,000 이하인 자연수입니다.
+- 노란색 격자의 수 yellow는 1 이상 2,000,000 이하인 자연수입니다.
+- 카펫의 가로 길이는 세로 길이와 같거나, 세로 길이보다 깁니다.
+
+### 📥 입출력 예
+brown	yellow	return
+10	2	[4, 3]
+8	1	[3, 3]
+24	24	[8, 6]
+|brown|yellow|return|
+|:--|:--|:--|
+|10|2|[4, 3]|
+|8|1|[3, 3]|
+|24|24|[8, 6]|
+
+---
+
+### 💻 내가 작성했던 첫 번째 접근 방식 (오답 또는 예외 발생)
+
+예전에 풀었을 때나 처음에 떠올린 방식은 전체 격자 수(`total = brown + yellow`)의 약수를 구하기 위해 단순 반복문을 돌리는 것이었습니다.
+
+```java
+public int[] solution(int brown, int yellow) {
+    int total = brown + yellow;
+    int[] answer = new int[2];
+
+    for (int i = total - 1; i >= 0; i--) {
+        if (total % i == 0) {
+            answer[0] = i;
+            answer[1] = total / i;
+            break; // 테두리가 yellow를 감싸는 조건 검증 없이 첫 약수 쌍에서 바로 종료됨
+        }
+    }
+
+    return answer;
+}
+```
+
+---
+
+### 🔍 문제 복기 및 원리 파악
+
+다시 코드를 복기해보니 전체 개수의 약수만 구해서는 안 되고, **카펫의 기하학적 구조**를 만족하는 약수 쌍을 찾아야 했습니다.
+
+#### 💡 핵심 방정식 세우기
+1. **전체 타일 수:** W * H = total = brown + yellow
+2. **안쪽 노란색 타일 수:** 테두리 1줄이 갈색이므로, 안쪽 알맹이의 크기는 항상 **(W - 2) * (H - 2) = yellow**가 됩니다.
+3. **가로/세로 조건:** 문제 조건상 W >= H 이며, 안쪽에 노란색이 들어가려면 최소 **H >= 3** 이어야 합니다.
+
+---
+
+### 💡 최종 해결 코드 (Java)
+
+`height`를 최소 크기인 3부터 시작하되, W >= H 조건에 따라 `height * height <= total` 범위까지만 안전하게 탐색하도록 작성했습니다.
+
+```java
+class Solution {
+    public int[] solution(int brown, int yellow) {
+        int total = brown + yellow;
+
+        // 세로(height)는 최소 3부터 시작하며, height <= width (height * height <= total) 보장
+        for (int height = 3; height * height <= total; height++) {
+            if (total % height == 0) {
+                int width = total / height;
+
+                // 테두리 1줄을 뺀 안쪽 영역이 yellow 개수와 일치하는지 확인
+                if ((width - 2) * (height - 2) == yellow) {
+                    return new int[]{width, height};
+                }
+            }
+        }
+
+        return new int[0];
+    }
+}
+```
+
+---
+
+### 💡 이번 문제를 통해 배운 점
+
+1. **도형 문제의 규칙을 방정식으로 치환하기**
+   단순 완전탐색 같아 보여도, 테두리 두께 1을 뺀 `(W - 2) * (H - 2) = yellow`라는 방정식을 이끌어내는 것이 핵심이었습니다.
+
+2. **탐색 범위 최적화 (`height * height <= total`)**
+   약수를 찾을 때 W >= H 조건이 있으므로, 세로 길이는 sqrt(total) 까지만 확인하면 충분하여 시간 복잡도를 O(sqrt(N))으로 줄일 수 있었습니다.
+내부 코드블록 주위에 이스케이프(\``java`)를 처리해두었으니, 이제 MDX 파싱 오류 없이 잘 들어갈 겁니다! 혹시 포맷에서 추가로 조정하고 싶은 부분이 있으신가요?
